@@ -25,35 +25,46 @@ chrome.alarms.onAlarm.addListener(function( alarm ) {
 	var xhttp=new XMLHttpRequest();
 	xhttp.open("GET", "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.xchange%20where%20pair%20%3D%20%22USDTRY%22&diagnostics=false&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys", true);
 	xhttp.onreadystatechange = function () {
-	if (xhttp.readyState == 4 && xhttp.status == 200) {
-		var doc = xhttp.responseXML;
-		rate = doc.getElementsByTagName("rate")[0].getElementsByTagName("Rate")[0].firstChild.nodeValue;
-		//console.log("Got an alarm!" + rate);
-		var name = doc.getElementsByTagName("rate")[0].getElementsByTagName("Name")[0].firstChild.nodeValue;
-		var mylastrate = 0;
-		chrome.storage.sync.get({ lastrate: '0' }, function(rates) {
-			mylastrate = rates.lastrate;
-		});
-		if (mylastrate != 0 && mylastrate > rate)
-			chrome.browserAction.setBadgeBackgroundColor({ color: [255, 0, 0, 255] });
-		else
-			chrome.browserAction.setBadgeBackgroundColor({ color: [0, 255, 0, 255] });
-		chrome.browserAction.setBadgeText({text: rate});
-		chrome.storage.sync.set({ lastrate: rate }, function() {});
-		var mymessage = "Last USD rate is:" + rate;
-		var opt = {
-		    type: 'basic', 
-		    title: "This is a notification", 
-		    message: mymessage,
-		    iconUrl: 'up-arrow.png'
-		};
-		chrome.notifications.create(
-		    "3l33t",
-		    opt,
-		function() {} 
-		);
+		if (xhttp.readyState == 4 && xhttp.status == 200) {
+			var doc = xhttp.responseXML;
+			rate = doc.getElementsByTagName("rate")[0].getElementsByTagName("Rate")[0].firstChild.nodeValue;
+			//console.log("Got an alarm!" + rate);
+			var name = doc.getElementsByTagName("rate")[0].getElementsByTagName("Name")[0].firstChild.nodeValue;
+			var mylastrate = 0;
+			var sourceCur = '';
+			var destCur = '';
+			var secondaryCur = '';
+			var mymessage = '';
+			chrome.storage.local.get('lastrate', function(rates) {
+				mylastrate = rates.lastrate;
+			});
+			if (mylastrate != 0 && mylastrate > rate)
+				chrome.browserAction.setBadgeBackgroundColor({ color: [255, 0, 0, 255] });
+			else
+				chrome.browserAction.setBadgeBackgroundColor({ color: [0, 255, 0, 255] });
+			chrome.browserAction.setBadgeText({text: rate});
+			chrome.storage.local.set({ 'lastrate': rate }, function() {});
+			chrome.storage.local.get('curoptions', function(result) {
+				console.log(result.curoptions);
+				sourceCur = result.curoptions.sourceCur;
+				secondaryCur = result.curoptions.secondaryCur;
+				destCur = result.curoptions.destCur;
+				mymessage = sourceCur+destCur+"=X rate is:" + rate + "\n It was "+mylastrate+" before";
+			});
 
-	}
+			var opt = {
+			    type: 'basic', 
+			    title: "Significant Change Detected", 
+			    message: mymessage,
+			    iconUrl: 'up-arrow.png'
+			};
+			chrome.notifications.create(
+			    "3l33t",
+			    opt,
+			function() {} 
+			);
+
+		}
 	};
 	xhttp.send(null);
 

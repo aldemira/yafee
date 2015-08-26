@@ -1,20 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script src="../jquery-2.1.4.min.js"></script>
 </head>
 <body>
 
 <p>
 Please Choose the Currency pair
 </p>
-<label>Primary Pair:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<select id="prisource"><option>USD</option><option>EUR</option><option>GBP</option><option>TRY</option></select> / <select id="dest"><option>TRY</option><option>EUR</option><option>USD</option><option>GBP</option></select>
-<br>
+<table>
+	<tr><td>
+	<label>Primary Pair:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</td>
+<td>
+	<select id="prisource">
+		<option>USD</option>
+		<option>EUR</option>
+		<option>GBP</option>
+		<option>TRY</option></select></td>
+<td rowspan="2">TO: <select id="dest">
+		<option>TRY</option>
+		<option>EUR</option>
+		<option>GBP</option>
+		<option>USD</option>
+	</select>
+</td></tr>
+<tr><td>
 <label>Secondary Pair:</label>
-<select id="secondarysource"><option>USD</option><option>EUR</option><option>GBP</option><option>TRY</option></select> / <select id="dest"><option>TRY</option><option>EUR</option><option>USD</option><option>GBP</option></select>
+</td><td>
+	<select id="secondarysource">
+		<option>EUR</option>
+		<option>GBP</option>
+		<option>TRY</option>
+		<option>USD</option>
+	</select>
+</td></tr>
+</table>
 <br>
 <br>
-<label>Show notifications if the previous are more/less than </label><input type="number" min="1" max="99" name="threshold">%
+<label>Show notifications if the previous are more/less than </label>
+<input type="number" min="1" max="99" id='threshold' name="threshold">x.01
 <br>
 <div id="status"></div>
 <br>
