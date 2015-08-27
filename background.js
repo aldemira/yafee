@@ -55,13 +55,18 @@ chrome.alarms.onAlarm.addListener(function( alarm ) {
 					chrome.browserAction.setBadgeText({text: rate});
 					chrome.storage.local.set({ 'lastrate': rate }, function() {});
 						if(Math.abs(mylastrate - rate) >= (threshold * 0.01)) {
+							var myicon = '';
+							if(mylastrate < rate)
+								myicon = 'down-arrow.png';
+							else
+								myicon = 'up-arrow.png';
 							mymessage = name+" is:" + rate + "\n It was "+mylastrate+" before";
 
 							var opt = {
 							    type: 'basic', 
 							    title: "Significant Change Detected", 
 							    message: mymessage,
-							    iconUrl: 'up-arrow.png'
+							    iconUrl: myicon
 							};
 							chrome.notifications.create(
 							    "3l33t",
