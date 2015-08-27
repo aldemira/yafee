@@ -26,10 +26,19 @@ chrome.storage.local.get('curoptions', startProcess);
 // and make sure we got every parameter
 function startProcess(results)
 {
-	var mypricurname = results.curoptions.sourceCur;
-	var myseccurname = results.curoptions.secondaryCur;
-	var mydestcurname = results.curoptions.destCur;
+	var mypricurname = '';
+	var myseccurname = '';
+	var mydestcurname = '';
 	var myurl = '';
+	if(results.curoptions == undefined) {
+		mypricurname = 'USD';
+		myseccurname = 'EUR';
+		mydestcurname = 'TRY';
+	} else {
+		mypricurname = results.curoptions.sourceCur;
+		myseccurname = results.curoptions.secondaryCur;
+		mydestcurname = results.curoptions.destCur;
+	}
 
 	$('#tabs-1-href').text(mypricurname+' Today');
 	$('#tabs-2-href').text(mypricurname+' Last Week');

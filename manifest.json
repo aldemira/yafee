@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "Yet Another Foreign Exchange Extension",
-	"version": "0.95",
+	"version": "0.951",
 	"options_page": "htmls/options.html",
 	"options_ui": {
 		"page": "htmls/options.html",
