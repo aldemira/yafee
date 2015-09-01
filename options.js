@@ -19,8 +19,9 @@ function save_options()
   var source = $('#prisource option:selected').text();
   var second = $('#secondarysource option:selected').text();
   var dest = $('#dest option:selected').text();
-  var threshold = $('#threshold').val();
-  var currencies = { 'sourceCur': source, 'secondaryCur': second, 'destCur': dest , 'threshold': threshold};
+  var threshold = $('#threshold').text();
+  var dsource = $('#dsource option:selected').text();
+  var currencies = { 'sourceCur': source, 'secondaryCur': second, 'destCur': dest , 'threshold': threshold, 'dsource': dsource};
   if((source != second) && (source != dest) && (second != dest)) {
 	  chrome.storage.local.set({
 		  'curoptions': currencies
@@ -44,25 +45,20 @@ function save_options()
 function restore_options() {
   chrome.storage.local.get('curoptions', function(items) {
 		//$('#prisource option[value="'+items.sourceCur+'"]').val(items.sourceCur);
-	if(items.curoptions.sourceCur != '')
-		$('#prisource').val(items.curoptions.sourceCur);
-	else
+	console.log(items.curoptions.dsource);
+	if(items.curoptions == undefined) {
 		$('#prisource').val('USD');
-
-  	if(items.curoptions.secondaryCur != '')
-		$('#secondarysource').val(items.curoptions.secondaryCur);
-  	else
-	  	('#secondarysource').val('EUR');
-
-  	if(items.curoptions.dest != '')
-		$('#dest').val(items.curoptions.destCur);
-  	else
+	  	$('#secondarysource').val('EUR');
 	  	$('#dest').val('TRY');
-
-  	if(items.curoptions.threshold != '')
-	  	$('#threshold').val(items.curoptions.threshold);
-  	else
 	  	$('#threshold').val('5');
+		$('#dsource').val('Yahoo!');
+	} else {
+		$('#prisource').val(items.curoptions.sourceCur);
+		$('#secondarysource').val(items.curoptions.secondaryCur);
+		$('#dest').val(items.curoptions.destCur);
+	  	$('#threshold').val(items.curoptions.threshold);
+		$('#dsource').val(items.curoptions.dsource);
+	}
   });
 }
 
