@@ -1,7 +1,8 @@
 {
 	"manifest_version": 2,
 	"name": "Yet Another Foreign Exchange Extension",
-	"version": "0.96",
+	"short_name": "yafee",
+	"version": "0.960",
 	"options_page": "htmls/options.html",
 	"options_ui": {
 		"page": "htmls/options.html",
