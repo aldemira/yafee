@@ -19,10 +19,13 @@ function save_options()
   var source = $('#prisource option:selected').text();
   var second = $('#secondarysource option:selected').text();
   var dest = $('#dest option:selected').text();
-  var threshold = $('#threshold').text();
+  var threshold = $('#threshold').val();
   var dsource = $('#dsource option:selected').text();
   var currencies = { 'sourceCur': source, 'secondaryCur': second, 'destCur': dest , 'threshold': threshold, 'dsource': dsource};
-  if((source != second) && (source != dest) && (second != dest)) {
+  if(threshold == '') {
+	  $('#status').text('Threshold cannot be empty');
+	  $('#status').attr('style','color: red');
+  } else if((source != second) && (source != dest) && (second != dest)) {
 	  chrome.storage.local.set({
 		  'curoptions': currencies
 	  }, function() {
@@ -44,8 +47,6 @@ function save_options()
 // stored in chrome.storage.
 function restore_options() {
   chrome.storage.local.get('curoptions', function(items) {
-		//$('#prisource option[value="'+items.sourceCur+'"]').val(items.sourceCur);
-	console.log(items.curoptions.dsource);
 	if(items.curoptions == undefined) {
 		$('#prisource').val('USD');
 	  	$('#secondarysource').val('EUR');
